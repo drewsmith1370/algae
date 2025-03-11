@@ -1,7 +1,7 @@
-Light Intensity and Water Temperature Scripts (30 Year Averages + Stdev)  Location in Southern Florida (Station 84570 Key west) for Pond Depth of 20.5 cm. ,,,,,
-Date,Time,Light,Light,Temp,Temp
-(m:dd:yy),(hr:min:sec),(umoles/m2-sec),(umoles/m2-sec),(o C),(o C)
-Average,Stdev,Average,Stdev
+Light Intensity and Water Temperature Scripts (30 Year Averages + Stdev)  Location in Southern Florida (Station 84570 Key west) for Pond Depth of 20.5 cm.
+Date Time Light Light Temp Temp
+(m:dd:yy) (hr:min:sec) (umoles/m2-sec) (umoles/m2-sec) (o C) (o C)
+Average Stdev Average Stdev
 01-01-0001,0:00:00,0,0,18.05,3.353407942
 01-01-0001,1:00:00,0,0,17.41533333,2.996046514
 01-01-0001,2:00:00,0,0,16.885,2.78428936
