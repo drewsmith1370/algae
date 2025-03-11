@@ -78,7 +78,7 @@ def PlotYearWeather(df):
 
 class WeatherReporter:
     """
-    Object class that is built to feed weather data into model-specific objects
+    Object class that is built to feed weather data into model-specific objects.
     """
     def __init__ (self, filename):
         self.df = PopulateWeatherData(filename)
@@ -90,18 +90,45 @@ class WeatherReporter:
             dates.append(date)
             groups.append(group)
 
-        self.dateGroups = np.array(groups)
+        groups = np.array(groups)
+        self.dateGroups = groups
 
 
     def getDataFrame(self):
+        """
+        Returns:
+            Complete DataFrame for WeatherReporter
+        """
         return self.df
     
     def getDayForecast(self, day):
-        return self.dateGroups[day][:,2:]
+        """
+        Params:
+            day: integer day of the year in range [0,365)
+        """
+        dat = self.dateGroups[day][:,2:]
+        return np.array([dat[:,0],dat[:,2]])
+    
+    def getHourForecast(self, day, hour):
+        """
+        Get light, temperature at hour of day
+
+        Params:
+            day: integer day in range [0,365)
+            hour: integer hour of day in range [0,24)
+        
+        Returns:
+            ndarray [light-avg, temp-avg]
+        """
+        dayFrcst = self.getDayForecast(day)
+        return dayFrcst[:,hour].astype(float)
+
 
 if __name__ == '__main__':
     weatherReport = WeatherReporter("./data/scott-lightTempData.csv")
-    day = weatherReport.getDayForecast(28)
-    print(day)
+    dat = weatherReport.getHourForecast(28,12)
+    print(dat)
+
+    df = weatherReport.getDataFrame()
+    PlotYearWeather(df)
     
-    PlotYearWeather(weatherReport.getDataFrame())

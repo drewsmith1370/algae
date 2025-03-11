@@ -37,8 +37,6 @@ class LookupResp:
                 if arr[i][j] == -1:
                     val = 1/3 * (arr[i-1][j] + arr[i][j-1] + arr[i][j+1])
                     self.arr[i][j] = val
-        
-        print(self.arr)
 
 
     def printTable(self):
