@@ -27,4 +27,7 @@ if __name__ == '__main__':
 
         plt.plot(growth_rates)
 
+    plt.title('Combined respiration and photosynthetic rates throughout year')
+    plt.xlabel('Time of day (hr)')
+    plt.ylabel('Growth Rate (nmol O2 / mL / min)')
     plt.show()
