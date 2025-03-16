@@ -144,8 +144,9 @@ class WeatherReporter:
 
         frcstLo = dayFrcst[:,hrLo]
         frcstHi = dayFrcst[:,hrHi]
-
-        return alpha * (frcstHi - frcstLo) + frcstLo
+        
+        frcst = alpha * (frcstHi - frcstLo) + frcstLo
+        return (frcst[0], frcst[1])
 
 
 
@@ -159,7 +160,7 @@ if __name__ == '__main__':
 
     for j in range(365):
         for i in range(24*16):
-            f[i] = weatherReport.getHourForecast(j, (float(i))/16.0)
-        plt.plot(t, f[:,0])
+            f[i], temp = weatherReport.getHourForecast(j, (float(i))/16.0)
+        plt.plot(t, f)
 
     plt.show()
