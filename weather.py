@@ -90,7 +90,6 @@ class WeatherReporter:
             dates.append(date)
             groups.append(group)
 
-        groups = np.array(groups)
         self.dateGroups = groups
 
 
@@ -106,8 +105,22 @@ class WeatherReporter:
         Params:
             day: integer day of the year in range [0,365)
         """
-        dat = self.dateGroups[day][:,2:]
-        return np.array([dat[:,0],dat[:,2]])
+        # dat = self.dateGroups[day][:,2:]
+        dat = np.array(self.dateGroups[day])
+        if day < 364:
+            next = np.array(self.dateGroups[day+1])
+        else:
+            next = np.array(self.dateGroups[0])
+            
+        lght = dat[:,2].tolist()
+        lght.append(next[0,2])
+        lght = np.array(lght).astype(float)
+        temp = dat[:,4].tolist()
+        temp.append(next[0,4])
+        temp = np.array(temp).astype(float)
+
+        
+        return np.array([lght, temp])
     
     def getHourForecast(self, day, hour):
         """
@@ -120,15 +133,33 @@ class WeatherReporter:
         Returns:
             ndarray [light-avg, temp-avg]
         """
+        # Get the days forecast, into midnight the next morning
         dayFrcst = self.getDayForecast(day)
-        return dayFrcst[:,hour].astype(float)
+        # Get the lower hour
+        hrLo = int(hour)
+
+        # Linear interpolation
+        hrHi = hrLo + 1
+        alpha = hour - hrLo
+
+        frcstLo = dayFrcst[:,hrLo]
+        frcstHi = dayFrcst[:,hrHi]
+
+        return alpha * (frcstHi - frcstLo) + frcstLo
+
 
 
 if __name__ == '__main__':
     weatherReport = WeatherReporter("./data/scott-lightTempData.csv")
     dat = weatherReport.getHourForecast(28,12)
-    print(dat)
+    # print(dat)
 
-    df = weatherReport.getDataFrame()
-    PlotYearWeather(df)
-    
+    t = np.arange(0,24,1/16)
+    f = np.zeros((24*16,2))
+
+    for j in range(365):
+        for i in range(24*16):
+            f[i] = weatherReport.getHourForecast(j, (float(i))/16.0)
+        plt.plot(t, f[:,0])
+
+    plt.show()
