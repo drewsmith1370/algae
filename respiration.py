@@ -85,13 +85,13 @@ class LookupResp:
 
         # Get bounding light vals
         idx_lo, light_lo, light_hi = self._find_light_indices(light)
-        idx_hi = idx_lo + 1 if idx_lo+1 < len(self.lightVals) else idx_lo
-        alpha = (light_hi - light) / (light_hi - light_lo)
+        idx_hi = idx_lo + 1
+        alpha = (light_hi - light) / (light_hi - light_lo) if light_lo != light_hi else light_lo
 
         # Get bounding temp vals
         jdx_lo, temp_lo, temp_hi = self._find_temp_indices(temp)
-        jdx_hi = jdx_lo + 1 if jdx_lo+1 < len(self.tempVals) else jdx_lo
-        beta = (temp_hi - temp) / (temp_hi - temp_lo)
+        jdx_hi = jdx_lo + 1
+        beta = (temp_hi - temp) / (temp_hi - temp_lo) if temp_lo != temp_hi else temp_lo
 
         # Lookup each value
         arr = self.arr
