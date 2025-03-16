@@ -80,7 +80,7 @@ class LookupResp:
             temp  - temperature in degrees Celsius
         
         returns:
-            respiration rate in umol O2 per
+            respiration rate in M per s
         """
 
         # Get bounding light vals
@@ -96,12 +96,12 @@ class LookupResp:
         # Lookup each value
         arr = self.arr
         # bilinear interpolation
-        pi = alpha * beta *        arr[jdx_lo, idx_lo] + \
+        resp = alpha * beta *        arr[jdx_lo, idx_lo] + \
             (1-alpha) * beta *     arr[jdx_lo, idx_hi] + \
             alpha * (1-beta) *     arr[jdx_hi, idx_lo] + \
             (1-alpha) * (1-beta) * arr[jdx_hi, idx_hi]
 
-        return pi
+        return resp / 1e6 / 60 # Convert to M / s
 
 if __name__ == '__main__':
     lookup = LookupResp()
@@ -122,5 +122,5 @@ if __name__ == '__main__':
     ax.plot_surface(X,Y,Z)
     ax.set_xlabel('Light Intensity (umol/m^2/s)')
     ax.set_ylabel('Temperature (degrees C)')
-    ax.set_zlabel('Respiration rate (nmol O2/mL/min)')
+    ax.set_zlabel('Respiration rate (M O2 / s)')
     plt.show()

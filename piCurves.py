@@ -83,7 +83,7 @@ class LookupPI:
             alpha * (1-beta) * arr[jdx_hi, idx_lo] + \
             (1-alpha) * (1-beta) * arr[jdx_hi, idx_hi]
 
-        return pi
+        return pi / 1e3 / 60
 
 if __name__ == '__main__':
     lookup = LookupPI()
@@ -103,6 +103,6 @@ if __name__ == '__main__':
     ax.plot_surface(X,Y,Z)
     ax.set_xlabel('Light Intensity (umol/m^2/s)')
     ax.set_ylabel('Temperature (degrees C)')
-    ax.set_zlabel('Photosynthetic Activity (nmol O2/mL/min)')
+    ax.set_zlabel('Photosynthetic Activity (M O2 / s)')
     plt.show()
     
