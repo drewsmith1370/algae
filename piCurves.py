@@ -63,17 +63,20 @@ class LookupPI:
         
         @param light - light intensity in umol/m2/s
         @param temp  - temperature in degrees Celsius
+
+        Returns:
+            photosynthetic rates in (M O2 / s)
         """
 
         # Get bounding light vals
         idx_lo, light_lo, light_hi = self._find_light_indices(light)
         idx_hi = idx_lo + 1 if idx_lo+1 < len(self.lightVals) else idx_lo
-        alpha = (light_hi - light) / (light_hi - light_lo)
+        alpha = (light_hi - light) / (light_hi - light_lo) if light_lo != light_hi else light_lo
 
         # Get bounding temp vals
         jdx_lo, temp_lo, temp_hi = self._find_temp_indices(temp)
         jdx_hi = jdx_lo + 1 if jdx_lo+1 < len(self.tempVals) else jdx_lo
-        beta = (temp_hi - temp) / (temp_hi - temp_lo)
+        beta = (temp_hi - temp) / (temp_hi - temp_lo) if temp_lo != temp_hi else temp_lo
 
         # Lookup each value
         arr = self.arr
@@ -83,7 +86,7 @@ class LookupPI:
             alpha * (1-beta) * arr[jdx_hi, idx_lo] + \
             (1-alpha) * (1-beta) * arr[jdx_hi, idx_hi]
 
-        return pi / 1e3 / 60
+        return pi * 1e-6 / 60 / 106.75 # Convert to M / s / OD (TODO: Determine standard OD)
 
 if __name__ == '__main__':
     lookup = LookupPI()
